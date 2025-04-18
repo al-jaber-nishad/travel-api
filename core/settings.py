@@ -33,6 +33,10 @@ INSTALLED_APPS = [
 	'corsheaders',
 	'drf_spectacular',
 
+    # Local
+    'travel',
+
+
 ]
 
 MIDDLEWARE = [
