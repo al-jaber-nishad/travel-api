@@ -19,7 +19,7 @@ This Django REST API recommends the best districts in Bangladesh for travel base
 ### 📦 Step 1: Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/travel-api.git
+git clone https://github.com/al-jaber-nishad/travel-api.git
 cd travel-api
 ```
 
@@ -39,6 +39,13 @@ This script will:
 * Launch Django server at http://localhost:8000
 
 🔑 On Windows, please make sure Redis is installed and started manually before running setup.py.
+
+### Step 3: Run the tests
+To run the tests, use the following command:
+```bash
+pytest
+```
+
 
 ### 📚 API Documentation
 Once the server is running, open your browser and visit:
