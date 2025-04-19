@@ -50,13 +50,13 @@ pytest
 ### 📚 API Documentation
 Once the server is running, open your browser and visit:
 ```bash
-http://localhost:8000/api/schema/swagger-ui/
+http://localhost:8000/schema/swagger-ui
 ```
 
 You’ll find:
 
-* /api/travel-recommendation/ – Compare two locations and get a recommendation
-* /api/top-districts/ – See the coolest and cleanest top 10 districts
+* http://localhost:8000/travel/api/v1/top_districts/ – See the coolest and cleanest top 10 districts
+* http://localhost:8000/travel/api/v1/destination_check/?current_lat=23.7315253&current_lon=90.4511451&destination=Chandpur&travel_date=2025-04-20 - Compare two locations and get a recommendation
 
 
 ### 🤝 License
