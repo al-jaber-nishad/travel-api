@@ -12,7 +12,7 @@ AIR_QUALITY_API = "https://air-quality-api.open-meteo.com/v1/air-quality"
 def calculate_top_districts(limit=10):
     try:
         # Load districts from local JSON
-        districts = load_local_districts()
+        districts = load_local_districts()["districts"]
 
         today = datetime.today().date()
         results = []

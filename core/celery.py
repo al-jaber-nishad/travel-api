@@ -13,6 +13,6 @@ app.autodiscover_tasks()
 app.conf.beat_schedule = {
     'refresh-top-districts-every-hour': {
         'task': 'core.tasks.refresh_top_districts',
-        'schedule': crontab(minute='*/5'), # every 5 mintues
+        'schedule': crontab(minute=0),  # every hour, at minute 0
     },
 }
