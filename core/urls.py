@@ -9,6 +9,7 @@ urlpatterns = [
 
     # Trave App
     path('travel/api/v1/', include('travel.urls.district_recommendation_urls')),
+    path('travel/api/v1/', include('travel.urls.travel_recommendation_urls')),
 
     # Swagger URLs
     path('schema/', SpectacularAPIView.as_view(), name='schema'),

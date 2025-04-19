@@ -3,22 +3,13 @@ from rest_framework.response import Response
 from rest_framework import status
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 from django.core.cache import cache
-import os
 import json
-from django.conf import settings
-
 from travel.utils import calculate_top_districts
 
 
 WEATHER_API = "https://api.open-meteo.com/v1/forecast"
 AIR_QUALITY_API = "https://air-quality-api.open-meteo.com/v1/air-quality"
 
-
-def load_local_districts():
-    path = os.path.join(settings.BASE_DIR, "data", "bd-districts.json")
-    with open(path, "r", encoding="utf-8") as f:
-        return json.load(f)
-    
 
 @extend_schema(
     parameters=[

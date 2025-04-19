@@ -1,3 +1,4 @@
+from django.conf import settings
 import requests
 import json
 import os
@@ -5,17 +6,13 @@ from datetime import datetime, timedelta
 
 # Constants
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DISTRICT_FILE_PATH = os.path.join(BASE_DIR, "data", "bd-districts.json")
-
 WEATHER_API = "https://api.open-meteo.com/v1/forecast"
 AIR_QUALITY_API = "https://air-quality-api.open-meteo.com/v1/air-quality"
 
 def calculate_top_districts(limit=10):
     try:
         # Load districts from local JSON
-        with open(DISTRICT_FILE_PATH, "r", encoding="utf-8") as f:
-            data = json.load(f)
-            districts = data["districts"]
+        districts = load_local_districts()
 
         today = datetime.today().date()
         results = []
@@ -71,3 +68,50 @@ def calculate_top_districts(limit=10):
     except Exception as e:
         print("Error in calculate_top_districts:", e)
         return []
+
+
+
+def load_local_districts():
+    path = os.path.join(settings.BASE_DIR, "data", "bd-districts.json")
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f)
+    
+
+
+def get_temp_and_pm25(lat, long, travel_date):
+    if isinstance(travel_date, str):
+        travel_date = datetime.fromisoformat(travel_date).date()
+    # Fetch weather data
+    weather_resp = requests.get(WEATHER_API, params={
+        "latitude": lat,
+        "longitude": long,
+        "hourly": "temperature_2m",
+        "timezone": "Asia/Dhaka",
+    }).json()
+    
+    times = weather_resp.get("hourly", {}).get("time", [])
+    temps = weather_resp.get("hourly", {}).get("temperature_2m", [])
+    temp_at_2pm = None
+
+            
+    for i, ts in enumerate(times):
+        dt = datetime.fromisoformat(ts)
+        if dt.date() == travel_date and dt.hour == 14:
+            temp_at_2pm = temps[i]
+            break
+
+    # Fetch air quality
+    air_resp = requests.get(AIR_QUALITY_API, params={
+        "latitude": lat,
+        "longitude": long,
+        "hourly": "pm2_5",
+        "timezone": "Asia/Dhaka",
+        "start_date": travel_date,
+        "end_date": travel_date
+    }).json()
+
+    pm_values = air_resp.get("hourly", {}).get("pm2_5", [])
+    valid_pm_values = [v for v in pm_values if v is not None]
+    avg_pm2_5 = round(sum(valid_pm_values) / len(valid_pm_values), 2) if valid_pm_values else 999
+
+    return temp_at_2pm or 999, avg_pm2_5
