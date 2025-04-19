@@ -70,6 +70,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
+AUTH_USER_MODEL = 'authentication.User'
+AUTHENTICATION_BACKENDS = [
+    'authentication.backends.EmailorPhoneModelBackend',
+    ]
+
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
