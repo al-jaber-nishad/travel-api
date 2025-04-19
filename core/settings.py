@@ -32,6 +32,7 @@ INSTALLED_APPS = [
 	'rest_framework',
 	'corsheaders',
 	'drf_spectacular',
+    'django_celery_beat',
 
     # Local
     'travel',
@@ -76,6 +77,13 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/0",
     }
 }
 
@@ -173,3 +181,10 @@ SIMPLE_JWT = {
     'JTI_CLAIM': 'jti',
 }
 
+# Celery settings
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_TIMEZONE = 'Asia/Dhaka'
+
+# Celery Beat
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
